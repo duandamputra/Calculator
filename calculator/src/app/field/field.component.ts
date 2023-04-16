@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CalculatorService } from '../calculator.service';
 
 @Component({
@@ -9,6 +9,9 @@ import { CalculatorService } from '../calculator.service';
 export class FieldComponent implements OnInit {
   isFocus: boolean = false;
   value:string = ''
+  keyboardRef: ElementRef | null = null
+
+  @ViewChild('field') fieldRef!:ElementRef
 
 
   constructor(
@@ -27,15 +30,26 @@ export class FieldComponent implements OnInit {
         }
       }
     })
+
+    this.calculatorService.keyboardRef$.subscribe((data)=>{
+      this.keyboardRef = data
+    })
+  }
+
+  ngAfterViewInit(){
+    window.addEventListener('click', (event:any)=>{
+      if(this.keyboardRef === null) return;
+      const isField = event.target !== this.fieldRef.nativeElement;
+      const isKeyboard = event.target.parentElement.parentElement !== this.keyboardRef.nativeElement;
+      
+      if( isField && isKeyboard ){
+        this.isFocus= false;
+      }      
+    })
   }
 
   onClick(){
     this.isFocus = true;
-    window.addEventListener('click', (event)=>{
-      event.target
-      console.log(event.target);
-      
-    })
   }
 
 }

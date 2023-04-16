@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CalculatorService } from '../calculator.service';
 
 @Component({
@@ -8,12 +8,17 @@ import { CalculatorService } from '../calculator.service';
 })
 export class ButtonGridComponent implements OnInit {
   value: string = ''
+  @ViewChild('keyboard') keyboardRef !: ElementRef
 
   constructor(
     private calculatorService: CalculatorService
   ) { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
+    this.calculatorService.setKeyboardRef(this.keyboardRef)
   }
 
   onClick(key:any){
