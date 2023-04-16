@@ -10,6 +10,7 @@ export class FieldComponent implements OnInit {
   isFocus: boolean = false;
   value:string = ''
 
+
   constructor(
     private calculatorService: CalculatorService
   ) { }
